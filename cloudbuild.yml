@@ -1,9 +1,9 @@
 steps: 
 
 #Execute SAST Scan using SonarCloud in GCP DevSecOps Pipeline
-  - name: maven:3-jdk-11
+  - name: maven:3-openjdk-18-slim
     entrypoint: mvn
-    args: ['verify', 'sonar:sonar','-Dsonar.host.url=https://sonarcloud.io','-Dsonar.organization=gcpsourcecodereposcan','-Dsonar.projectKey=gcpvulnerableprojectkey','-Dsonar.login=${_SONAR_TOKEN}']
+    args: ['verify', 'sonar:sonar','-Dsonar.host.url=https://sonarcloud.io','-Dsonar.organization=gcpsourcecodereposcan','-Dsonar.projectKey=gcpvulnerableprojectkey','-Dsonar.token=${_SONAR_TOKEN}']
     id: SAST Scan using SonarCloud in GCP DevSecOps Pipeline
 
 #Run Software Composition Analysis (SCA security scan) using Snyk in GCP DevSecOps Pipeline
@@ -28,10 +28,9 @@ steps:
         apt-get update
         apt-get -y install wget
         apt-get -y install default-jdk
-        wget https://github.com/zaproxy/zaproxy/releases/download/v2.11.1/ZAP_2.11.1_Linux.tar.gz
-        mkdir zap
-        tar -xvf ZAP_2.11.1_Linux.tar.gz
-        cd ZAP_2.11.1
+        wget https://github.com/zaproxy/zaproxy/releases/download/v2.14.0/ZAP_2.14.0_Linux.tar.gz
+        tar -xvf ZAP_2.14.0_Linux.tar.gz
+        cd ZAP_2.14.0
         ./zap.sh -cmd -quickurl https://www.example.com -quickprogress -quickout ../zap_report.html 
     id: DAST Scan using OWASP ZAP in GCP DevSecOps Pipeline
 
